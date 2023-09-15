@@ -8,10 +8,18 @@ import Modal from './Modal';
 import Button from './Button';
 
 export default class App extends Component {
+  state = {
+    searchValue: '',
+  };
+
+  onSearchFormSubmit = searchValue => {
+    this.setState({ searchValue });
+  };
+
   render() {
     return (
       <div>
-        <Searchbar />
+        <Searchbar onSubmit={this.onSearchFormSubmit} />
         <Loader />
         <ImageGallery />
         <ImageGalleryItem />

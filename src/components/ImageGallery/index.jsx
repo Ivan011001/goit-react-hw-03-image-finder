@@ -10,17 +10,15 @@ export default class ImageGallery extends Component {
     images: [],
     isLoading: false,
     currentPage: 1,
+    imagesLoading: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.searchValue !== this.props.searchValue) {
-      this.setState({ images: [], isLoading: true });
-      getImagesBySearchQuery(this.props.searchValue, this.state.currentPage)
-        .then(newImages => this.setState({ images: newImages.hits }))
-        .catch(e => console.log(e.message))
-        .finally(() => {
-          this.setState({ isLoading: false });
-        });
+      this.setState(
+        { images: [], isLoading: true, currentPage: 1, imagesLoading: false },
+        this.fetchImages
+      );
     }
   }
 
@@ -30,22 +28,28 @@ export default class ImageGallery extends Component {
         isLoading: true,
         currentPage: prevState.currentPage + 1,
       }),
-      this.fetchMoreImages
+      this.fetchImages
     );
   };
 
-  fetchMoreImages = () => {
-    getImagesBySearchQuery(this.props.searchValue, this.state.currentPage).then(
-      newImages =>
+  fetchImages = () => {
+    getImagesBySearchQuery(this.props.searchValue, this.state.currentPage)
+      .then(newImages => {
         this.setState(prevState => ({
           images: [...prevState.images, ...newImages.hits],
-          isLoading: false,
-        }))
-    );
+          imagesLoading: true,
+        }));
+
+        if (newImages.hits.length < 12) this.setState({ imagesLoading: false });
+      })
+      .catch(e => console.log(e))
+      .finally(() => {
+        this.setState({ isLoading: false });
+      });
   };
 
   render() {
-    const { images, isLoading } = this.state;
+    const { images, isLoading, imagesLoading } = this.state;
 
     return (
       <>
@@ -59,9 +63,10 @@ export default class ImageGallery extends Component {
             />
           ))}
         </Gallery>
+
         {isLoading && <Loader />}
 
-        {images.length > 0 && <Button onClick={this.onLoadMoreClick} />}
+        {imagesLoading && <Button onClick={this.onLoadMoreClick} />}
       </>
     );
   }

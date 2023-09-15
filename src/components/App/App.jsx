@@ -1,11 +1,10 @@
 import { Component } from 'react';
+import { AppContainer } from './App.styled';
 
-import Searchbar from './Searchbar';
-import Loader from './Loader';
-import ImageGallery from './ImageGallery';
-import ImageGalleryItem from './ImageGalleryItem';
-import Modal from './Modal';
-import Button from './Button';
+import Searchbar from '../Searchbar';
+import ImageGallery from '../ImageGallery';
+import Modal from '../Modal';
+import Button from '../Button';
 
 export default class App extends Component {
   state = {
@@ -17,15 +16,15 @@ export default class App extends Component {
   };
 
   render() {
+    const { searchValue } = this.state;
+
     return (
-      <div>
+      <AppContainer>
         <Searchbar onSubmit={this.onSearchFormSubmit} />
-        <Loader />
-        <ImageGallery />
-        <ImageGalleryItem />
+        <ImageGallery searchValue={searchValue} />
         <Modal />
         <Button />
-      </div>
+      </AppContainer>
     );
   }
 }

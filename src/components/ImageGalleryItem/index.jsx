@@ -1,3 +1,9 @@
-export default function ImageGalleryItem() {
-  return <div>ImageGalleryItem</div>;
+import { GalleryItem, GalleryImage } from './ImageGalleryItem.styled';
+
+export default function ImageGalleryItem({ smallImg, largeImg, tags }) {
+  return (
+    <GalleryItem>
+      <GalleryImage src={smallImg} alt={tags} />
+    </GalleryItem>
+  );
 }

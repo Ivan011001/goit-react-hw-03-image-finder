@@ -1,3 +1,9 @@
+import { MagnifyingGlass } from 'react-loader-spinner';
+
 export default function Loader() {
-  return <div>Loader</div>;
+  return (
+    <div>
+      <MagnifyingGlass />
+    </div>
+  );
 }

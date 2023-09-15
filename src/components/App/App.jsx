@@ -3,7 +3,6 @@ import { AppContainer } from './App.styled';
 
 import Searchbar from '../Searchbar';
 import ImageGallery from '../ImageGallery';
-import Modal from '../Modal';
 import Button from '../Button';
 
 export default class App extends Component {
@@ -22,7 +21,6 @@ export default class App extends Component {
       <AppContainer>
         <Searchbar onSubmit={this.onSearchFormSubmit} />
         <ImageGallery searchValue={searchValue} />
-        <Modal />
         <Button />
       </AppContainer>
     );

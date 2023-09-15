@@ -1,9 +1,10 @@
-import { MagnifyingGlass } from 'react-loader-spinner';
+import { Dna } from 'react-loader-spinner';
+import { LoaderWrapper } from './Loader.styled';
 
 export default function Loader() {
   return (
-    <div>
-      <MagnifyingGlass />
-    </div>
+    <LoaderWrapper>
+      <Dna />
+    </LoaderWrapper>
   );
 }

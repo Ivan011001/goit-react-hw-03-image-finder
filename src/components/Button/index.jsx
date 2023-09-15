@@ -1,3 +1,5 @@
+import { LoadButton } from './Button.styled';
+
 export default function Button() {
-  return <div>Button Load More</div>;
+  return <LoadButton>Load More</LoadButton>;
 }

@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import Button from 'components/Button';
 import Loader from 'components/Loader';
 import ImageGalleryItem from 'components/ImageGalleryItem';
 import { Gallery } from './ImageGallery.styled';
@@ -36,6 +37,8 @@ export default class ImageGallery extends Component {
             />
           ))}
         </Gallery>
+
+        {images.length > 0 && <Button />}
       </>
     );
   }

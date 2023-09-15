@@ -9,24 +9,46 @@ export default class ImageGallery extends Component {
   state = {
     images: [],
     isLoading: false,
+    currentPage: 1,
   };
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.searchValue !== this.props.searchValue) {
-      this.setState({ isLoading: true });
-      getImagesBySearchQuery(this.props.searchValue).then(newImages =>
-        this.setState({ images: newImages.hits, isLoading: false })
-      );
+      this.setState({ images: [], isLoading: true });
+      getImagesBySearchQuery(this.props.searchValue, this.state.currentPage)
+        .then(newImages => this.setState({ images: newImages.hits }))
+        .catch(e => console.log(e.message))
+        .finally(() => {
+          this.setState({ isLoading: false });
+        });
     }
   }
 
+  onLoadMoreClick = () => {
+    this.setState(
+      prevState => ({
+        isLoading: true,
+        currentPage: prevState.currentPage + 1,
+      }),
+      this.fetchMoreImages
+    );
+  };
+
+  fetchMoreImages = () => {
+    getImagesBySearchQuery(this.props.searchValue, this.state.currentPage).then(
+      newImages =>
+        this.setState(prevState => ({
+          images: [...prevState.images, ...newImages.hits],
+          isLoading: false,
+        }))
+    );
+  };
+
   render() {
-    const { images, isLoading } = this.state;
+    const { images, isLoading, currentPage } = this.state;
 
     return (
       <>
-        {isLoading && <Loader />}
-
         <Gallery>
           {images.map(image => (
             <ImageGalleryItem
@@ -37,8 +59,9 @@ export default class ImageGallery extends Component {
             />
           ))}
         </Gallery>
+        {isLoading && <Loader />}
 
-        {images.length > 0 && <Button />}
+        {images.length > 0 && <Button onClick={this.onLoadMoreClick} />}
       </>
     );
   }

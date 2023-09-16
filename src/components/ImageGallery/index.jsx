@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import Modal from 'components/Modal';
 import Button from 'components/Button';
 import Loader from 'components/Loader';
 import ImageGalleryItem from 'components/ImageGalleryItem';
@@ -12,8 +11,6 @@ export default class ImageGallery extends Component {
     isLoading: false,
     currentPage: 1,
     imagesLoading: false,
-    modalOpened: false,
-    modalImage: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -51,16 +48,8 @@ export default class ImageGallery extends Component {
       });
   };
 
-  toggleModal = img => {
-    this.setState(prevState => ({
-      modalOpened: !prevState.modalOpened,
-      modalImage: img,
-    }));
-  };
-
   render() {
-    const { images, isLoading, imagesLoading, modalOpened, modalImage } =
-      this.state;
+    const { images, isLoading, imagesLoading } = this.state;
 
     return (
       <>
@@ -71,7 +60,7 @@ export default class ImageGallery extends Component {
               smallImg={image.webformatURL}
               largeImg={image.largeImageURL}
               tags={image.tags}
-              toggleModal={() => this.toggleModal(image.largeImageURL)}
+              toggleModal={() => this.props.toggleModal(image.largeImageURL)}
             />
           ))}
         </Gallery>
@@ -79,10 +68,6 @@ export default class ImageGallery extends Component {
         {isLoading && <Loader />}
 
         {imagesLoading && <Button onClick={this.onLoadMoreClick} />}
-
-        {modalOpened && (
-          <Modal toggleModal={this.toggleModal} img={modalImage} />
-        )}
       </>
     );
   }

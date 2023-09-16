@@ -1,6 +1,8 @@
-import { GlobalStyle } from 'GlobalStyle.styled';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Component } from 'react';
+
+import { GlobalStyle } from 'GlobalStyle.styled';
 import { AppContainer } from './App.styled';
 
 import Searchbar from '../Searchbar';
@@ -40,6 +42,7 @@ export default class App extends Component {
           {modalOpened && (
             <Modal toggleModal={this.toggleModal} img={modalImage} />
           )}
+          <ToastContainer />
         </AppContainer>
       </>
     );

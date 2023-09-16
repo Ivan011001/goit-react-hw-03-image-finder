@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { Component } from 'react';
 import { GoSearch } from 'react-icons/go';
 import {
@@ -19,8 +20,17 @@ export default class Searchbar extends Component {
   };
 
   onFormSubmit = evt => {
+    const { searchValue } = this.state;
     evt.preventDefault();
-    this.props.onSubmit(this.state.searchValue);
+
+    if (!searchValue.trim()) {
+      return toast.error('Sorry... Your input is invalid', {
+        autoClose: 2500,
+        pauseOnHover: false,
+      });
+    }
+
+    this.props.onSubmit(searchValue.trim());
     this.setState({ searchValue: '' });
   };
 

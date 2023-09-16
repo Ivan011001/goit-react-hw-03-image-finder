@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { Component } from 'react';
 import Button from 'components/Button';
 import Loader from 'components/Loader';
@@ -35,6 +36,13 @@ export default class ImageGallery extends Component {
   fetchImages = () => {
     getImagesBySearchQuery(this.props.searchValue, this.state.currentPage)
       .then(newImages => {
+        if (!newImages) {
+          return toast.error('Sorry... There are no such images', {
+            autoClose: 2500,
+            pauseOnHover: false,
+          });
+        }
+
         this.setState(prevState => ({
           images: [...prevState.images, ...newImages.hits],
           imagesLoading: true,

@@ -13,6 +13,7 @@ export default class ImageGallery extends Component {
     currentPage: 1,
     imagesLoading: false,
     modalOpened: false,
+    modalImage: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -50,12 +51,16 @@ export default class ImageGallery extends Component {
       });
   };
 
-  toggleModal = () => {
-    this.setState(prevState => ({ modalOpened: !prevState.modalOpened }));
+  toggleModal = img => {
+    this.setState(prevState => ({
+      modalOpened: !prevState.modalOpened,
+      modalImage: img,
+    }));
   };
 
   render() {
-    const { images, isLoading, imagesLoading, modalOpened } = this.state;
+    const { images, isLoading, imagesLoading, modalOpened, modalImage } =
+      this.state;
 
     return (
       <>
@@ -66,7 +71,7 @@ export default class ImageGallery extends Component {
               smallImg={image.webformatURL}
               largeImg={image.largeImageURL}
               tags={image.tags}
-              toggleModal={this.toggleModal}
+              toggleModal={() => this.toggleModal(image.largeImageURL)}
             />
           ))}
         </Gallery>
@@ -75,7 +80,9 @@ export default class ImageGallery extends Component {
 
         {imagesLoading && <Button onClick={this.onLoadMoreClick} />}
 
-        {modalOpened && <Modal toggleModal={this.toggleModal} />}
+        {modalOpened && (
+          <Modal toggleModal={this.toggleModal} img={modalImage} />
+        )}
       </>
     );
   }

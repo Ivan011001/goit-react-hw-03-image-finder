@@ -30,12 +30,14 @@ export default class Modal extends Component {
   };
 
   render() {
+    const { img } = this.props;
+
     return (
       <>
         {createPortal(
           <Overlay onClick={this.overlayHandleClick}>
             <ModalWindow>
-              <ModalImg />
+              <ModalImg src={img} />
             </ModalWindow>
           </Overlay>,
           modalRoot

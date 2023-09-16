@@ -1,5 +1,8 @@
+import { createPortal } from 'react-dom';
 import { Component } from 'react';
 import { ModalWindow, Overlay, ModalImg } from './Modal.styled';
+
+const modalRoot = document.querySelector('#modal-root');
 
 export default class Modal extends Component {
   componentDidMount() {
@@ -29,11 +32,14 @@ export default class Modal extends Component {
   render() {
     return (
       <>
-        <Overlay onClick={this.overlayHandleClick}>
-          <ModalWindow>
-            <ModalImg />
-          </ModalWindow>
-        </Overlay>
+        {createPortal(
+          <Overlay onClick={this.overlayHandleClick}>
+            <ModalWindow>
+              <ModalImg />
+            </ModalWindow>
+          </Overlay>,
+          modalRoot
+        )}
       </>
     );
   }

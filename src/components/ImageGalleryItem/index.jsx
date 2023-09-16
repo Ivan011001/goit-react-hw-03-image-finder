@@ -1,8 +1,13 @@
 import { GalleryItem, GalleryImage } from './ImageGalleryItem.styled';
 
-export default function ImageGalleryItem({ smallImg, largeImg, tags }) {
+export default function ImageGalleryItem({
+  smallImg,
+  largeImg,
+  tags,
+  toggleModal,
+}) {
   return (
-    <GalleryItem>
+    <GalleryItem onClick={toggleModal}>
       <GalleryImage src={smallImg} alt={tags} />
     </GalleryItem>
   );

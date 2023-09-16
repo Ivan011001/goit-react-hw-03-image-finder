@@ -12,7 +12,7 @@ export default class ImageGallery extends Component {
     isLoading: false,
     currentPage: 1,
     imagesLoading: false,
-    modalOpened: true,
+    modalOpened: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -66,6 +66,7 @@ export default class ImageGallery extends Component {
               smallImg={image.webformatURL}
               largeImg={image.largeImageURL}
               tags={image.tags}
+              toggleModal={this.toggleModal}
             />
           ))}
         </Gallery>

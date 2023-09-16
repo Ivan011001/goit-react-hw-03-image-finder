@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { Component } from 'react';
 import Button from 'components/Button';
@@ -11,13 +12,18 @@ export default class ImageGallery extends Component {
     images: [],
     isLoading: false,
     currentPage: 1,
-    imagesLoading: false,
+    error: null,
+  };
+
+  static propTypes = {
+    searchValue: PropTypes.string.isRequired,
+    toggleModal: PropTypes.func.isRequired,
   };
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.searchValue !== this.props.searchValue) {
       this.setState(
-        { images: [], isLoading: true, currentPage: 1, imagesLoading: false },
+        { images: [], isLoading: true, currentPage: 1 },
         this.fetchImages
       );
     }
@@ -33,31 +39,44 @@ export default class ImageGallery extends Component {
     );
   };
 
-  fetchImages = () => {
-    getImagesBySearchQuery(this.props.searchValue, this.state.currentPage)
-      .then(newImages => {
-        if (!newImages) {
-          return toast.error('Sorry... There are no such images', {
-            autoClose: 2500,
-            pauseOnHover: false,
-          });
-        }
+  fetchImages = async () => {
+    const { currentPage } = this.state;
+    const { searchValue } = this.props;
 
-        this.setState(prevState => ({
-          images: [...prevState.images, ...newImages.hits],
-          imagesLoading: true,
-        }));
+    try {
+      const newImages = await getImagesBySearchQuery(searchValue, currentPage);
 
-        if (newImages.hits.length < 12) this.setState({ imagesLoading: false });
-      })
-      .catch(e => console.log(e))
-      .finally(() => {
-        this.setState({ isLoading: false });
+      if (!newImages) {
+        return toast.error('Sorry... There are no such images', {
+          autoClose: 2500,
+          pauseOnHover: false,
+        });
+      }
+
+      this.setState(prevState => ({
+        images: [...prevState.images, ...newImages.hits],
+        imagesLoading: true,
+      }));
+
+      if (newImages.hits.length < 12) this.setState({ imagesLoading: false });
+    } catch (error) {
+      this.errorResponse(error);
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  };
+
+  errorResponse = error => {
+    this.setState({ error: error.message }, () => {
+      toast.error(`Sorry... There was an error: ${this.state.error}`, {
+        autoClose: 2500,
+        pauseOnHover: false,
       });
+    });
   };
 
   render() {
-    const { images, isLoading, imagesLoading } = this.state;
+    const { images, isLoading } = this.state;
 
     return (
       <>
@@ -75,7 +94,7 @@ export default class ImageGallery extends Component {
 
         {isLoading && <Loader />}
 
-        {imagesLoading && <Button onClick={this.onLoadMoreClick} />}
+        {images.length > 0 && <Button onClick={this.onLoadMoreClick} />}
       </>
     );
   }

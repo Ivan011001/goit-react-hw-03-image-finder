@@ -16,6 +16,15 @@ export default class App extends Component {
     modalImage: null,
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.searchValue !== this.state.searchValue) {
+      localStorage.setItem(
+        'search-value',
+        JSON.stringify(this.state.searchValue)
+      );
+    }
+  }
+
   onSearchFormSubmit = searchValue => {
     this.setState({ searchValue });
   };

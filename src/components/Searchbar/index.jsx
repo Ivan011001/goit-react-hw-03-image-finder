@@ -1,5 +1,6 @@
-import { toast } from 'react-toastify';
 import { Component } from 'react';
+import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import { GoSearch } from 'react-icons/go';
 import {
   SearchBar,
@@ -11,6 +12,10 @@ import {
 export default class Searchbar extends Component {
   state = {
     searchValue: '',
+  };
+
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
   };
 
   onInputChange = evt => {

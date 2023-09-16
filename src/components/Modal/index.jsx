@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 import { Component } from 'react';
 import { ModalWindow, Overlay, ModalImg } from './Modal.styled';
@@ -5,6 +6,11 @@ import { ModalWindow, Overlay, ModalImg } from './Modal.styled';
 const modalRoot = document.querySelector('#modal-root');
 
 export default class Modal extends Component {
+  static propTypes = {
+    toggleModal: PropTypes.func.isRequired,
+    img: PropTypes.string.isRequired,
+  };
+
   componentDidMount() {
     document.addEventListener('keydown', this.escapeHandlePress);
   }
